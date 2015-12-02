@@ -1,18 +1,15 @@
 package org.homenet.easimon.smarthome.domain;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class AccumulatedGasRecord implements GasRecord {
 
     private long amount;
-    private final Date timestamp;
+    private final DateTime timestamp;
 
-    public AccumulatedGasRecord(Date start) {
+    public AccumulatedGasRecord(DateTime start) {
         this.timestamp = start;
-    }
-    
-    public void add(GasRecordEntity gasRecord) {
-        this.amount += gasRecord.getAmount();
+        this.amount = 0;
     }
 
     @Override
@@ -21,7 +18,7 @@ public class AccumulatedGasRecord implements GasRecord {
     }
 
     @Override
-    public Date getTimestamp() {
+    public DateTime getTimestamp() {
         return timestamp;
     }
 

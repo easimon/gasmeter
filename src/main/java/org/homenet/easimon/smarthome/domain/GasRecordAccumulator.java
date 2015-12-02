@@ -1,42 +1,41 @@
 package org.homenet.easimon.smarthome.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 
 public class GasRecordAccumulator {
 
     private ArrayList<AccumulatedGasRecord> records;
 
-    private Date start;
+    private DateTime start;
     private long interval;
 
-    private GasRecordAccumulator(Date start, long interval) {
-        this.start = new Date(start.getTime());
+    private GasRecordAccumulator(DateTime start, long interval) {
+        this.start = start;
         this.interval = interval;
         this.records = new ArrayList<AccumulatedGasRecord>();
     }
 
-    private GasRecord getOrExtendFor(Date date) {
-        if (date.before(start)) {
+    private GasRecord getOrExtendFor(DateTime date) {
+        if (date.isBefore(start)) {
             throw new IllegalArgumentException();
         }
-        
-        long diff = date.getTime() - start.getTime();
+
+        long diff = date.getMillis() - start.getMillis();
         int index = (int) (diff / interval);
 
         if (records.size() <= index) {
             records.ensureCapacity(index + 1);
             for (int i = records.size(); i < index; i++) {
-                Date startForIndex = DateUtils.addSeconds(start, (int) (index * interval));
-                records.add(new AccumulatedGasRecord(startForIndex));
+                DateTime startForIndex = start.withDurationAdded((index * interval), 1);
+                // records.add(new AccumulatedGasRecord(startForIndex));
             }
         }
         return records.get(index);
     }
 
-    public static GasRecordAccumulator createAccumulator(Date start, long interval) {
+    public static GasRecordAccumulator createAccumulator(DateTime start, long interval) {
         GasRecordAccumulator accumulator = new GasRecordAccumulator(start, interval);
         return accumulator;
     }

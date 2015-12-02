@@ -1,11 +1,11 @@
 package org.homenet.easimon.smarthome.domain;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public interface GasRecord {
-    
+
     public long getAmount();
-    
-    public Date getTimestamp();
+
+    public DateTime getTimestamp();
 
 }

@@ -40,7 +40,7 @@ public class TestConfiguration {
         hibernateJpaVendorAdapter.setDatabase(Database.DERBY);
         return hibernateJpaVendorAdapter;
     }
-    
+
     @Bean
     @Qualifier("init")
     public DatabasePopulator populator() throws IOException {

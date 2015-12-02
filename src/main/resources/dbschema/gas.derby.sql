@@ -1,4 +1,5 @@
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(1, '2014-01-01 00:00:00', 105691, 'OFFSET'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES
+(1, '2014-01-01 00:00:00', 105691, 'OFFSET'),
 (2, '2014-12-28 22:01:43', 1, 'NORMAL'),
 (3, '2014-12-28 23:33:19', 1, 'NORMAL'),
 (4, '2014-12-28 23:33:39', 1, 'NORMAL'),
@@ -1213,7 +1214,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(1,
 (1214, '2015-01-14 18:36:47', 1, 'NORMAL'),
 (1215, '2015-01-14 18:57:37', 1, 'NORMAL'),
 (1216, '2015-01-14 18:59:33', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(1217, '2015-01-14 19:00:05', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(1217, '2015-01-14 19:00:05', 1, 'NORMAL'),
 (1218, '2015-01-14 19:00:37', 1, 'NORMAL'),
 (1219, '2015-01-14 19:01:09', 1, 'NORMAL'),
 (1220, '2015-01-14 19:04:20', 1, 'NORMAL'),
@@ -2401,7 +2402,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(12
 (2402, '2015-01-19 16:31:37', 1, 'NORMAL'),
 (2403, '2015-01-19 16:33:32', 1, 'NORMAL'),
 (2404, '2015-01-19 16:37:05', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(2405, '2015-01-19 16:37:37', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(2405, '2015-01-19 16:37:37', 1, 'NORMAL'),
 (2406, '2015-01-19 16:41:10', 1, 'NORMAL'),
 (2407, '2015-01-19 16:41:43', 1, 'NORMAL'),
 (2408, '2015-01-19 16:45:16', 1, 'NORMAL'),
@@ -3589,7 +3590,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(24
 (3590, '2015-01-23 07:05:18', 1, 'NORMAL'),
 (3591, '2015-01-23 07:08:50', 1, 'NORMAL'),
 (3592, '2015-01-23 07:11:10', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(3593, '2015-01-23 07:13:46', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(3593, '2015-01-23 07:13:46', 1, 'NORMAL'),
 (3594, '2015-01-23 07:15:39', 1, 'NORMAL'),
 (3595, '2015-01-23 07:16:11', 1, 'NORMAL'),
 (3596, '2015-01-23 07:19:46', 1, 'NORMAL'),
@@ -4777,7 +4778,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(35
 (4778, '2015-01-26 15:39:58', 1, 'NORMAL'),
 (4779, '2015-01-26 15:40:30', 1, 'NORMAL'),
 (4780, '2015-01-26 15:41:02', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(4781, '2015-01-26 15:41:34', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(4781, '2015-01-26 15:41:34', 1, 'NORMAL'),
 (4782, '2015-01-26 15:42:06', 1, 'NORMAL'),
 (4783, '2015-01-26 15:42:39', 1, 'NORMAL'),
 (4784, '2015-01-26 15:43:11', 1, 'NORMAL'),
@@ -5965,7 +5966,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(47
 (5966, '2015-01-29 17:08:06', 1, 'NORMAL'),
 (5967, '2015-01-29 17:11:39', 1, 'NORMAL'),
 (5968, '2015-01-29 17:13:36', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(5969, '2015-01-29 17:14:07', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(5969, '2015-01-29 17:14:07', 1, 'NORMAL'),
 (5970, '2015-01-29 17:14:39', 1, 'NORMAL'),
 (5971, '2015-01-29 17:15:11', 1, 'NORMAL'),
 (5972, '2015-01-29 17:18:43', 1, 'NORMAL'),
@@ -7153,7 +7154,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(59
 (7154, '2015-02-01 09:17:19', 1, 'NORMAL'),
 (7155, '2015-02-01 09:20:52', 1, 'NORMAL'),
 (7156, '2015-02-01 09:21:23', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(7157, '2015-02-01 09:21:55', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(7157, '2015-02-01 09:21:55', 1, 'NORMAL'),
 (7158, '2015-02-01 09:25:27', 1, 'NORMAL'),
 (7159, '2015-02-01 09:25:59', 1, 'NORMAL'),
 (7160, '2015-02-01 09:26:31', 1, 'NORMAL'),
@@ -8341,7 +8342,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(71
 (8342, '2015-02-05 06:02:54', 1, 'NORMAL'),
 (8343, '2015-02-05 06:03:15', 1, 'NORMAL'),
 (8344, '2015-02-05 06:03:37', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(8345, '2015-02-05 06:03:58', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(8345, '2015-02-05 06:03:58', 1, 'NORMAL'),
 (8346, '2015-02-05 06:04:21', 1, 'NORMAL'),
 (8347, '2015-02-05 06:04:40', 1, 'NORMAL'),
 (8348, '2015-02-05 06:05:02', 1, 'NORMAL'),
@@ -9529,7 +9530,7 @@ INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(83
 (9530, '2015-02-07 14:53:20', 1, 'NORMAL'),
 (9531, '2015-02-07 15:14:31', 1, 'NORMAL'),
 (9532, '2015-02-07 15:15:03', 1, 'NORMAL');
-INSERT INTO "smarthome"."gas_raw" ("id", "ts", "amount", "correction") VALUES(9533, '2015-02-07 15:35:51', 1, 'NORMAL'),
+INSERT INTO smarthome.gas_raw (id, ts, amount, correction) VALUES(9533, '2015-02-07 15:35:51', 1, 'NORMAL'),
 (9534, '2015-02-07 15:48:55', 1, 'NORMAL'),
 (9535, '2015-02-07 15:49:27', 1, 'NORMAL'),
 (9536, '2015-02-07 15:49:59', 1, 'NORMAL'),

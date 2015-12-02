@@ -1,11 +1,15 @@
 package org.homenet.easimon.smarthome.domain;
 
-import java.util.Calendar;
-import java.util.Date;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.homenet.easimon.smarthome.spring.SpringBasedIntegrationTest;
-import org.homenet.easimon.smarthome.util.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,25 +18,35 @@ public class GasRecordRepositoryTest extends SpringBasedIntegrationTest {
     @Autowired
     private GasRecordRepository repository;
 
+    @Autowired
+    private DataSource dataSource;
 
-    private Date getStartDate() {
-        return DateUtils.getDate(2015, Calendar.JANUARY, 1);
+    private DateTime getStartDate() {
+        return new DateTime(2015, 1, 1, 0, 0, 0);
     }
 
-    private Date getEndDate() {
-        return DateUtils.getDate(2015, Calendar.JANUARY, 31, 23, 59, 59);
+    private DateTime getEndDate() {
+        return new DateTime(2015, 1, 31, 23, 59, 59);
+    }
+
+    @Test
+    public void testDatasource() throws SQLException {
+        this.dataSource.getConnection().prepareStatement("values 1").executeQuery();
     }
 
     @Test
     public void testGetInterval() {
         List<? extends GasRecord> records = repository.getRecordsForInterval(getStartDate(), getEndDate());
-        System.out.println(records.size());        
+        assertThat(records.size(), is(equalTo(7084)));
+        System.out.println(records.size());
     }
 
     @Test
-    public void testGetInterval2() {
-        List<? extends GasRecord> records = repository.getRecordsForInterval(getStartDate(), getEndDate());
-        System.out.println(records.size());        
+    public void testGetQuantized() {
+        List<? extends GasRecord> records = repository.getAccumulatedGasRecords(getStartDate(), getEndDate(), 500);
+        for (GasRecord g : records) {
+            System.out.println(g);
+        }
     }
 
 }
