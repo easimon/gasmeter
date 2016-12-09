@@ -1,48 +1,41 @@
 package org.homenet.easimon.smarthome.domain;
 
+import java.time.Instant;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
-import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class GasRecordRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+	private static final Logger LOGGER = LoggerFactory.getLogger(GasRecordRepository.class);
 
-    public List<GasRecordEntity> getRecordsForInterval(DateTime from, DateTime to) {
-        TypedQuery<GasRecordEntity> q = em.createNamedQuery(GasRecordEntity.NQ_INTERVAL, GasRecordEntity.class);
-        q.setParameter("start", from);
-        q.setParameter("end", to);
-        return q.getResultList();
-    }
+	@PersistenceContext
+	private EntityManager em;
 
-    public List<? extends GasRecord> getRecordsForIntervalDaily(DateTime from, DateTime to) {
-        List<? extends GasRecord> all = getRecordsForInterval(from, to);
+	private long temporalToEpochSecond(TemporalAccessor from) {
+		return Instant.from(from).getEpochSecond();
+	}
 
-        // Date dayStart = null;
+	public List<GasRecord> findAllGasRecords() {
+		return em //
+				.createNamedQuery(GasRecordEntity.NQ_ALL, GasRecord.class) //
+				.getResultList();
+	}
 
-        // for (GasRecord record : all) {
-        // if (!getDayStart(record.getTimestamp()).equals(dayStart)) {
-        // // TODO dayStart =
-        // }
-        // }
-
-        return all;
-    }
-
-    public List<? extends GasRecord> getAccumulatedGasRecords(DateTime from, DateTime to, long quantizerSeconds) {
-        List<? extends GasRecord> results = em.createNamedQuery(GasRecordEntity.NQ_QUANTIZED, AccumulatedGasRecord.class) //
-                .setParameter("quantizer", quantizerSeconds) //
-                .setParameter("start", from) //
-                .setParameter("end", to) //
-                .getResultList();
-        return results;
-    }
+	public List<GasRecord> findGasRecordsByPeriod(TemporalAccessor from, TemporalAccessor to) {
+		LOGGER.debug("Selecting all Records >= {} and < {}.", from, to);
+		return em //
+				.createNamedQuery(GasRecordEntity.NQ_INTERVAL, GasRecord.class) //
+				.setParameter("start", temporalToEpochSecond(from)) //
+				.setParameter("end", temporalToEpochSecond(to)) //
+				.getResultList();
+	}
 
 }

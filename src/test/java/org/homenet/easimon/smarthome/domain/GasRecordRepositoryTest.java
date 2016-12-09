@@ -1,52 +1,43 @@
 package org.homenet.easimon.smarthome.domain;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.homenet.easimon.smarthome.spring.SpringBasedIntegrationTest;
-import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class GasRecordRepositoryTest extends SpringBasedIntegrationTest {
 
-    @Autowired
-    private GasRecordRepository repository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(GasRecordRepositoryTest.class);
 
-    @Autowired
-    private DataSource dataSource;
+	@Autowired
+	private GasRecordRepository repository;
 
-    private DateTime getStartDate() {
-        return new DateTime(2015, 1, 1, 0, 0, 0);
-    }
+	@Test
+	public void testFindAll() {
+		List<? extends GasRecord> records = repository.findAllGasRecords();
+		assertFalse(records.isEmpty());
+		LOGGER.info("{} Records found.", records.size());
+	}
 
-    private DateTime getEndDate() {
-        return new DateTime(2015, 1, 31, 23, 59, 59);
-    }
-
-    @Test
-    public void testDatasource() throws SQLException {
-        this.dataSource.getConnection().prepareStatement("values 1").executeQuery();
-    }
-
-    @Test
-    public void testGetInterval() {
-        List<? extends GasRecord> records = repository.getRecordsForInterval(getStartDate(), getEndDate());
-        assertThat(records.size(), is(equalTo(7084)));
-        System.out.println(records.size());
-    }
-
-    @Test
-    public void testGetQuantized() {
-        List<? extends GasRecord> records = repository.getAccumulatedGasRecords(getStartDate(), getEndDate(), 500);
-        for (GasRecord g : records) {
-            System.out.println(g);
-        }
-    }
+	@Test
+	public void testFindByPeriod() {
+		Instant now = OffsetDateTime.parse("2015-02-01T00:00:00+02:00").toInstant();
+		Instant dayAgo = now.minus(1, ChronoUnit.DAYS);
+		List<? extends GasRecord> records = repository.findGasRecordsByPeriod(dayAgo, now);
+		assertFalse(records.isEmpty());
+		for (GasRecord record : records) {
+			assertFalse(record.getTimestamp().isBefore(dayAgo)); // >= dayAgo
+			assertTrue(record.getTimestamp().isBefore(now)); // < now
+		}
+		LOGGER.info("{} Records found.", records.size());
+	}
 
 }
