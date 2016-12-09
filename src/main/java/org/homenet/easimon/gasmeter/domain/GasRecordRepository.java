@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.domain;
+package org.homenet.easimon.gasmeter.domain;
 
 import java.time.Instant;
 import java.time.temporal.TemporalAccessor;

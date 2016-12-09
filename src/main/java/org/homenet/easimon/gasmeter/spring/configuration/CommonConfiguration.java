@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.spring.configuration;
+package org.homenet.easimon.gasmeter.spring.configuration;
 
 import java.time.ZoneId;
 
@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(CommonConfiguration.BASE_PACKAGE)
+@ComponentScan(CommonConfiguration.AUTSCAN_BASE_PACKAGE)
 public class CommonConfiguration {
 
-	public static final String BASE_PACKAGE = "org.homenet.easimon.smarthome";
+	public static final String AUTSCAN_BASE_PACKAGE = "org.homenet.easimon.gasmeter.domain";
 
 	@Bean
 	public ZoneId displayZoneId() {
@@ -44,7 +44,7 @@ public class CommonConfiguration {
 		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 		lef.setDataSource(dataSource);
 		lef.setJpaVendorAdapter(jpaVendorAdapter);
-		lef.setPackagesToScan(BASE_PACKAGE);
+		lef.setPackagesToScan(AUTSCAN_BASE_PACKAGE);
 		return lef;
 	}
 

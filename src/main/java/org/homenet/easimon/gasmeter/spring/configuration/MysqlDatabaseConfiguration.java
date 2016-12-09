@@ -1,33 +1,38 @@
-package org.homenet.easimon.smarthome.spring.configuration;
+package org.homenet.easimon.gasmeter.spring.configuration;
 
 import javax.sql.DataSource;
 
+import org.mariadb.jdbc.MariaDbDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
-public class DerbyDatabaseConfiguration {
+public class MysqlDatabaseConfiguration {
 
-	@Value("${db.ddl.init.ddl}")
-	public String initializerDdl;
+	@Value("${db.hostname}")
+	private String dbHostname;
 
-	@Value("${db.ddl.init.sql}")
-	public String initializerSql;
+	@Value("${db.databasename}")
+	private String dbDatabasename;
+
+	@Value("${db.username}")
+	private String dbUsername;
+
+	@Value("${db.password}")
+	private String dbPassword;
 
 	@Bean
 	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder() //
-				.addScript(initializerDdl) //
-				.addScript(initializerSql) //
-				.setType(EmbeddedDatabaseType.DERBY) //
-				.generateUniqueName(true) //
-				.build();
+		final MariaDbDataSource dataSource = new MariaDbDataSource();
+		dataSource.setServerName(dbHostname);
+		dataSource.setDatabaseName(dbDatabasename);
+		dataSource.setUserName(dbUsername);
+		dataSource.setPassword(dbPassword);
+		return dataSource;
 	}
 
 	@Bean
@@ -35,7 +40,8 @@ public class DerbyDatabaseConfiguration {
 		HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 		hibernateJpaVendorAdapter.setShowSql(false);
 		hibernateJpaVendorAdapter.setGenerateDdl(false);
-		hibernateJpaVendorAdapter.setDatabase(Database.DERBY);
+		hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
 		return hibernateJpaVendorAdapter;
 	}
+
 }

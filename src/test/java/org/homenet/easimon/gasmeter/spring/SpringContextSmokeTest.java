@@ -1,17 +1,16 @@
-package org.homenet.easimon.smarthome.spring;
+package org.homenet.easimon.gasmeter.spring;
 
 import static org.junit.Assert.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
-import org.homenet.easimon.smarthome.domain.GasRecordEntity;
+import org.homenet.easimon.gasmeter.domain.GasRecordEntity;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

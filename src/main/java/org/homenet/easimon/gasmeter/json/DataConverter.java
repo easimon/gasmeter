@@ -1,8 +1,8 @@
-package org.homenet.easimon.smarthome.json;
+package org.homenet.easimon.gasmeter.json;
 
 import java.util.List;
 
-import org.homenet.easimon.smarthome.domain.GasRecord;
+import org.homenet.easimon.gasmeter.domain.GasRecord;
 
 public class DataConverter {
 

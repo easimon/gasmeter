@@ -13,7 +13,7 @@ PARAMETER STYLE JAVA
 NO SQL
 LANGUAGE JAVA
 DETERMINISTIC
-EXTERNAL NAME 'org.homenet.easimon.smarthome.util.TimestampConverter.timestampToUnixTime';
+EXTERNAL NAME 'org.homenet.easimon.gasmeter.util.TimestampConverter.timestampToUnixTime';
 
 CREATE VIEW gas_v AS
 SELECT 

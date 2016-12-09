@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.util;
+package org.homenet.easimon.gasmeter.util;
 
 import java.time.Instant;
 

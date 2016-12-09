@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.domain;
+package org.homenet.easimon.gasmeter.domain;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.homenet.easimon.gasmeter.domain.GasRecord;
+import org.homenet.easimon.gasmeter.domain.GasRecordQuantizer;
+import org.homenet.easimon.gasmeter.domain.GasRecordType;
 import org.junit.Test;
 
 public class GasRecordQuantizerTest {

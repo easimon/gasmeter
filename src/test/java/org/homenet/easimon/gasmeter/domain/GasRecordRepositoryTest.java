@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.domain;
+package org.homenet.easimon.gasmeter.domain;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,9 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import org.homenet.easimon.smarthome.spring.SpringBasedIntegrationTest;
+import org.homenet.easimon.gasmeter.domain.GasRecord;
+import org.homenet.easimon.gasmeter.domain.GasRecordRepository;
+import org.homenet.easimon.gasmeter.spring.SpringBasedIntegrationTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

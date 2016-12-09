@@ -1,8 +1,9 @@
-package org.homenet.easimon.smarthome.spring;
+package org.homenet.easimon.gasmeter.spring;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.homenet.easimon.gasmeter.spring.configuration.DispatcherConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;

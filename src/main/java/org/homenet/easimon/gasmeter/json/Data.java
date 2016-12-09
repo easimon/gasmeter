@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.json;
+package org.homenet.easimon.gasmeter.json;
 
 public class Data {
 

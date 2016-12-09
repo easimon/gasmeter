@@ -1,4 +1,4 @@
-package org.homenet.easimon.smarthome.domain;
+package org.homenet.easimon.gasmeter.domain;
 
 import java.time.Instant;
 
@@ -21,27 +21,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 		@NamedQuery(name = GasRecordEntity.NQ_ALL, query = GasRecordEntity.NQ_ALL_QUERY), //
 		@NamedQuery(name = GasRecordEntity.NQ_INTERVAL, query = GasRecordEntity.NQ_INTERVAL_QUERY), //
 })
-// @NamedQueries({ //
-// @NamedQuery(name = GasRecordEntity.NQ_INTERVAL, query =
-// GasRecordEntity.NQ_INTERVAL_QUERY), //
-// //
-// })
-// @NamedNativeQueries({ //
-// @NamedNativeQuery( //
-// name = GasRecordEntity.NQ_QUANTIZED, //
-// query = GasRecordEntity.NQ_QUANTIZED_QUERY, //
-// resultSetMapping = "accumulated-gas-record") })
-// @SqlResultSetMappings({ @SqlResultSetMapping( //
-// name = "accumulated-gas-record", //
-// classes = { //
-// @ConstructorResult(//
-// targetClass = AccumulatedGasRecord.class, //
-// columns = { //
-// @ColumnResult(name = "ts"), //
-// @ColumnResult(name = "amount") //
-// }) //
-// }) //
-// })
 public class GasRecordEntity implements GasRecord {
 
 	public static final String ENAME = "GasRecordImpl";
@@ -50,15 +29,9 @@ public class GasRecordEntity implements GasRecord {
 
 	public static final String NQ_ALL = PREFIX + "All";
 	public static final String NQ_INTERVAL = PREFIX + "Interval";
-	// public static final String NQ_QUANTIZED = PREFIX + "Quantized";
 	protected static final String NQ_ALL_QUERY = "FROM " + ENAME + " g ORDER BY g.timestamp";
 	protected static final String NQ_INTERVAL_QUERY = "FROM " + ENAME
 			+ " g WHERE g.timestamp >= :start AND g.timestamp < :end ORDER BY g.timestamp";
-	// static final String NQ_QUANTIZED_QUERY = "SELECT g.ts / :quantizer *
-	// :quantizer as ts, sum(g.amount) as amount from "
-	// + SNAME + "." + TNAME
-	// + " g WHERE g.ts BETWEEN :start AND :end GROUP BY g.ts / :quantizer *
-	// :quantizer ORDER BY g.ts / :quantizer * :quantizer";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
