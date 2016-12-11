@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.homenet.easimon.util.ZonedDateTimeTruncator;
 
 public class GasRecordQuantizer {
 
@@ -56,15 +57,21 @@ public class GasRecordQuantizer {
 			.compareTo(g2.getTimestamp());
 
 	public static List<GasRecord> quantize(final List<GasRecord> records, final TemporalUnit unit,
-			final ZoneId timezone) {
+			final ZoneId timezone, final Locale locale) {
 		if (records.isEmpty())
 			return Collections.emptyList();
 
 		final List<GasRecord> result = new ArrayList<>();
 
-		final List<GasRecord> sortedRecords = records.stream().sorted(BY_TIMESTAMP).collect(Collectors.toList());
+		final List<GasRecord> sortedRecords = records;// .stream().sorted(BY_TIMESTAMP).collect(Collectors.toList());
 
-		Instant start = records.get(0).getTimestamp().atZone(timezone).truncatedTo(unit).toInstant();
+		Instant start = ZonedDateTimeTruncator
+				.truncate( //
+						records.get(0).getTimestamp().atZone(timezone), //
+						unit, //
+						locale) //
+				.toInstant();
+
 		Instant next = start.atZone(timezone).plus(1, unit).toInstant();
 		QuantizedGasRecord quantized = new QuantizedGasRecord(start);
 

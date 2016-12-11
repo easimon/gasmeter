@@ -11,11 +11,9 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.homenet.easimon.gasmeter.domain.GasRecord;
-import org.homenet.easimon.gasmeter.domain.GasRecordQuantizer;
-import org.homenet.easimon.gasmeter.domain.GasRecordType;
 import org.junit.Test;
 
 public class GasRecordQuantizerTest {
@@ -47,10 +45,12 @@ public class GasRecordQuantizerTest {
 	}
 
 	private static final ZoneId BERLIN = ZoneId.of("Europe/Berlin");
+	private static final Locale GERMANY = Locale.GERMANY;
 
 	@Test
 	public void testSimpleByHour() {
 		final ZoneId zone = BERLIN;
+		final Locale locale = GERMANY;
 
 		List<GasRecord> records = Arrays.asList( //
 				mockRecord(ZonedDateTime.parse("2015-01-01T00:00:00+01:00[Europe/Berlin]"), 1), //
@@ -62,7 +62,7 @@ public class GasRecordQuantizerTest {
 				mockRecord(ZonedDateTime.parse("2015-01-01T02:01:00+01:00[Europe/Berlin]"), 7) //
 		);
 
-		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone);
+		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone, locale);
 
 		assertThat(quantizedByHour.size(), is(3));
 		assertThat(quantizedByHour.get(0).getAmount(), equalTo(1L + 2 + 3 + 4));
@@ -73,6 +73,7 @@ public class GasRecordQuantizerTest {
 	@Test
 	public void testSimpleByDay() {
 		final ZoneId zone = BERLIN;
+		final Locale locale = GERMANY;
 
 		List<GasRecord> records = Arrays.asList( //
 				mockRecord(ZonedDateTime.parse("2015-01-01T00:00:00+01:00[Europe/Berlin]"), 1), //
@@ -82,7 +83,7 @@ public class GasRecordQuantizerTest {
 				mockRecord(ZonedDateTime.parse("2015-01-03T01:01:00+01:00[Europe/Berlin]"), 5) //
 		);
 
-		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.DAYS, zone);
+		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.DAYS, zone, locale);
 
 		assertThat(quantizedByHour.size(), is(3));
 		assertThat(quantizedByHour.get(0).getAmount(), equalTo(1L + 2));
@@ -93,6 +94,7 @@ public class GasRecordQuantizerTest {
 	@Test
 	public void testHourlyAroundCESTtoCET() {
 		final ZoneId zone = BERLIN;
+		final Locale locale = GERMANY;
 
 		List<GasRecord> records = Arrays.asList( //
 				mockRecord(OffsetDateTime.parse("2016-10-30T01:00:00+02:00"), 1), //
@@ -103,7 +105,7 @@ public class GasRecordQuantizerTest {
 				mockRecord(OffsetDateTime.parse("2016-10-30T03:00:00+01:00"), 6) //
 		);
 
-		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone);
+		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone, locale);
 
 		assertThat(quantizedByHour.size(), is(4));
 		assertThat(quantizedByHour.get(0).getAmount(), equalTo(1L));
@@ -115,6 +117,7 @@ public class GasRecordQuantizerTest {
 	@Test
 	public void testDailyAroundCESTtoCET() {
 		final ZoneId zone = BERLIN;
+		final Locale locale = GERMANY;
 
 		List<GasRecord> records = Arrays.asList( //
 				mockRecord(OffsetDateTime.parse("2016-10-30T00:00:00+02:00"), 1), //
@@ -122,7 +125,7 @@ public class GasRecordQuantizerTest {
 				mockRecord(OffsetDateTime.parse("2016-10-31T00:00:00+01:00"), 11) //
 		);
 
-		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.DAYS, zone);
+		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.DAYS, zone, locale);
 
 		assertThat(quantizedByHour.size(), is(2));
 		assertThat(quantizedByHour.get(0).getAmount(), equalTo(1L + 6));
@@ -132,6 +135,7 @@ public class GasRecordQuantizerTest {
 	@Test
 	public void testHourlyAroundCETtoCEST() {
 		final ZoneId zone = BERLIN;
+		final Locale locale = GERMANY;
 
 		List<GasRecord> records = Arrays.asList( //
 				mockRecord(OffsetDateTime.parse("2016-03-27T01:00:00+01:00"), 1), //
@@ -141,7 +145,7 @@ public class GasRecordQuantizerTest {
 				mockRecord(OffsetDateTime.parse("2016-03-27T04:00:00+02:00"), 6) //
 		);
 
-		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone);
+		List<GasRecord> quantizedByHour = GasRecordQuantizer.quantize(records, ChronoUnit.HOURS, zone, locale);
 
 		assertThat(quantizedByHour.size(), is(3));
 		assertThat(quantizedByHour.get(0).getAmount(), equalTo(1L + 2));

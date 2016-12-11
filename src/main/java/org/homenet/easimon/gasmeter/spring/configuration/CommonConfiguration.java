@@ -1,11 +1,11 @@
 package org.homenet.easimon.gasmeter.spring.configuration;
 
 import java.time.ZoneId;
+import java.util.Locale;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +18,28 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(CommonConfiguration.AUTSCAN_BASE_PACKAGE)
+@ComponentScan(basePackages = { //
+		CommonConfiguration.BASE_PACKAGE_ASPECTS, //
+		CommonConfiguration.BASE_PACKAGE_DOMAIN, //
+		CommonConfiguration.BASE_PACKAGE_CONTROLLER //
+})
 public class CommonConfiguration {
 
-	public static final String AUTSCAN_BASE_PACKAGE = "org.homenet.easimon.gasmeter.domain";
+	public static final String BASE_PACKAGE_APPLICATION = "org.homenet.easimon.gasmeter.";
+	public static final String BASE_PACKAGE_DOMAIN = BASE_PACKAGE_APPLICATION + "domain";
+	public static final String BASE_PACKAGE_CONTROLLER = BASE_PACKAGE_APPLICATION + "controller";
+	public static final String BASE_PACKAGE_ASPECTS = BASE_PACKAGE_APPLICATION + "aspects";
 
+	// TODO: Session Bean
 	@Bean
 	public ZoneId displayZoneId() {
-		return ZoneId.systemDefault();
+		return ZoneId.of("Europe/Berlin");
+	}
+
+	// TODO: Session Bean.
+	@Bean
+	public Locale displayLocale() {
+		return Locale.GERMANY;
 	}
 
 	@Bean
@@ -39,12 +53,12 @@ public class CommonConfiguration {
 	}
 
 	@Bean
-	public FactoryBean<EntityManagerFactory> entityManagerFactory(DataSource dataSource,
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
 			JpaVendorAdapter jpaVendorAdapter) {
 		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 		lef.setDataSource(dataSource);
 		lef.setJpaVendorAdapter(jpaVendorAdapter);
-		lef.setPackagesToScan(AUTSCAN_BASE_PACKAGE);
+		lef.setPackagesToScan(BASE_PACKAGE_DOMAIN);
 		return lef;
 	}
 

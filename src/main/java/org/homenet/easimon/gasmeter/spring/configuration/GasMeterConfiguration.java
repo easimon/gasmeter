@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({ //
 		CommonConfiguration.class, //
-		TestPropertySourcesConfiguration.class, //
-		DerbyDatabaseConfiguration.class //
+		PropertySourcesConfiguration.class, //
+		MariaDbDatabaseConfiguration.class //
 })
-public class TestConfiguration {
+public class GasMeterConfiguration {
 
 }

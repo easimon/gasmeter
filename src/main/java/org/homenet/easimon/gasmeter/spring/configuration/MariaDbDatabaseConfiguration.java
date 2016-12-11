@@ -11,7 +11,7 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
-public class MysqlDatabaseConfiguration {
+public class MariaDbDatabaseConfiguration {
 
 	@Value("${db.hostname}")
 	private String dbHostname;
