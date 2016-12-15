@@ -3,6 +3,7 @@ package org.homenet.easimon.gasmeter.domain;
 import java.time.Instant;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,7 +40,8 @@ public class GasRecordEntity implements GasRecord {
 	private long id;
 
 	@Column(name = "ts")
-	private long timestamp;
+	@Convert(converter = InstantToEpochSecondConverter.class)
+	private Instant timestamp;
 
 	@Column(name = "amount")
 	private long amount;
@@ -56,11 +58,6 @@ public class GasRecordEntity implements GasRecord {
 	}
 
 	@Override
-	public Instant getTimestamp() {
-		return Instant.ofEpochSecond(this.timestamp);
-	}
-
-	@Override
 	public long getAmount() {
 		return amount;
 	}
@@ -68,6 +65,11 @@ public class GasRecordEntity implements GasRecord {
 	@Override
 	public GasRecordType getType() {
 		return type;
+	}
+
+	@Override
+	public Instant getTimestamp() {
+		return this.timestamp;
 	}
 
 	@Override

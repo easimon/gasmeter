@@ -47,8 +47,8 @@ public class GasController {
 		List<GasRecord> records = repository.findGasRecordsByPeriod(from, to);
 		List<GasRecord> quantized = GasRecordQuantizer.quantize(records, quantizedby, displayZoneId, displayLocale);
 
-		String[] labels = new String[quantized.size()];
-		long[] data = new long[quantized.size()];
+		final String[] labels = new String[quantized.size()];
+		final long[] data = new long[quantized.size()];
 
 		int i = 0;
 		for (GasRecord record : quantized) {

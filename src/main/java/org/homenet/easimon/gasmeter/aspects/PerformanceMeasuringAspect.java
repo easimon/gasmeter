@@ -32,7 +32,6 @@ public class PerformanceMeasuringAspect {
 	}
 
 	@Pointcut("gasmeterBean() && pubMethod() && (restController() || controller() || repository())")
-
 	public void measurable() {
 	}
 

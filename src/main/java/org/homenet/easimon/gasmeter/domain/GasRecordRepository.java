@@ -19,10 +19,6 @@ public class GasRecordRepository {
 	@PersistenceContext
 	private EntityManager em;
 
-	private long temporalToEpochSecond(TemporalAccessor from) {
-		return Instant.from(from).getEpochSecond();
-	}
-
 	public List<GasRecord> findAllGasRecords() {
 		return em //
 				.createNamedQuery(GasRecordEntity.NQ_ALL, GasRecord.class) //
@@ -33,8 +29,8 @@ public class GasRecordRepository {
 		LOGGER.debug("Selecting all Records >= {} and < {}.", from, to);
 		return em //
 				.createNamedQuery(GasRecordEntity.NQ_INTERVAL, GasRecord.class) //
-				.setParameter("start", temporalToEpochSecond(from)) //
-				.setParameter("end", temporalToEpochSecond(to)) //
+				.setParameter("start", Instant.from(from)) //
+				.setParameter("end", Instant.from(to)) //
 				.getResultList();
 	}
 

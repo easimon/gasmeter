@@ -7,10 +7,6 @@ public class Data {
 
 	public Data(String[] labels, Dataset[] datasets) {
 		this.labels = labels;
-		// for (Dataset dataset: datasets) {
-		// if (dataset.getData().length != labels.length)
-		// throw new IllegalArgumentException("Data length mismatch");
-		// }
 		this.datasets = datasets;
 	}
 
