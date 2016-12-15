@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Import;
 @Import({ //
 		CommonConfiguration.class, //
 		PropertySourcesConfiguration.class, //
-		MariaDbDatabaseConfiguration.class //
+		MariaDbDatabaseConfiguration.class, //
+		MqttConfiguration.class //
 })
 public class GasMeterConfiguration {
 

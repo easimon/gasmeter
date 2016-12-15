@@ -53,6 +53,12 @@ public class GasRecordEntity implements GasRecord {
 	protected GasRecordEntity() {
 	}
 
+	public GasRecordEntity(Instant timestamp, long amount, GasRecordType type) {
+		this.timestamp = timestamp;
+		this.amount = amount;
+		this.type = type;
+	}
+
 	public long getId() {
 		return id;
 	}

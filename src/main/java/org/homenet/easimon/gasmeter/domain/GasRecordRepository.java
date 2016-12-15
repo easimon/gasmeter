@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class GasRecordRepository {
@@ -32,6 +33,23 @@ public class GasRecordRepository {
 				.setParameter("start", Instant.from(from)) //
 				.setParameter("end", Instant.from(to)) //
 				.getResultList();
+	}
+
+	@Transactional
+	public GasRecord createNormalGasRecord(Instant timestamp) {
+		long amount = 1;
+		GasRecordType type = GasRecordType.NORMAL;
+		GasRecord record = new GasRecordEntity(timestamp, amount, type);
+		em.persist(record);
+		return record;
+	}
+
+	@Transactional
+	public GasRecord createCorrectionGasRecord(Instant timestamp, long amount) {
+		GasRecordType type = GasRecordType.CORRECTION;
+		GasRecord record = new GasRecordEntity(timestamp, amount, type);
+		em.persist(record);
+		return record;
 	}
 
 }

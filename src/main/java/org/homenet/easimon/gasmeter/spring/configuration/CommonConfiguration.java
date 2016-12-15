@@ -21,11 +21,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = { //
 		CommonConfiguration.BASE_PACKAGE_ASPECTS, //
 		CommonConfiguration.BASE_PACKAGE_DOMAIN, //
+		CommonConfiguration.BASE_PACKAGE_INTEGRATION, //
 		CommonConfiguration.BASE_PACKAGE_CONTROLLER //
 })
 public class CommonConfiguration {
 
 	public static final String BASE_PACKAGE_APPLICATION = "org.homenet.easimon.gasmeter.";
+	public static final String BASE_PACKAGE_INTEGRATION = BASE_PACKAGE_APPLICATION + "integration";
 	public static final String BASE_PACKAGE_DOMAIN = BASE_PACKAGE_APPLICATION + "domain";
 	public static final String BASE_PACKAGE_CONTROLLER = BASE_PACKAGE_APPLICATION + "controller";
 	public static final String BASE_PACKAGE_ASPECTS = BASE_PACKAGE_APPLICATION + "aspects";
