@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(ignoreResourceNotFound = false, value = "test.spring.properties")
+@PropertySource(ignoreResourceNotFound = false, value = "classpath:test.spring.properties")
 public class TestPropertySourcesConfiguration {
 
 }

@@ -13,7 +13,9 @@ import javax.sql.DataSource;
 import org.homenet.easimon.gasmeter.domain.GasRecordEntity;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
+@EnableAutoConfiguration
 public class SpringContextSmokeTest extends SpringBasedIntegrationTest {
 
 	@Autowired
