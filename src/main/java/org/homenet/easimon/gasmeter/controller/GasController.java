@@ -2,12 +2,10 @@ package org.homenet.easimon.gasmeter.controller;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Locale;
@@ -25,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GasController {
-	
+
 	GasRecordRepository repository;
-	
+
 	private ZoneId displayZoneId;
 
 	private Locale displayLocale;
@@ -58,22 +56,22 @@ public class GasController {
 		List<GasRecord> quantized = getGasRecords(from, to, quantizedby);
 
 		Dataset[] datasets = new Dataset[1 + (comparePrevious ? 1 : 0)];
-		
+
 		int currentYear = from.get(ChronoField.YEAR);
 		datasets[0] = getGasDataset(String.valueOf(currentYear), quantized);
-		
+
 		if (comparePrevious) {
 			final ZonedDateTime fromPreviousYear = from.minusYears(1);
 			final ZonedDateTime toPreviousYear = from.plus(quantity, quantityUnit);
 			List<GasRecord> quantizedPreviousYear = getGasRecords(fromPreviousYear, toPreviousYear, quantizedby);
-			
+
 			datasets[1] = getGasDataset(String.valueOf(currentYear - 1), quantizedPreviousYear);
 		}
 
 		String[] labels = getLabels(quantized);
 		return new Data(labels, datasets);
 	}
-	
+
 	private String[] getLabels(List<GasRecord> quantizedData) {
 		final String[] labels = new String[quantizedData.size()];
 
@@ -82,10 +80,10 @@ public class GasController {
 			final String label = record.getTimestamp().atZone(displayZoneId).toLocalDateTime().toString();
 			labels[i] = label;
 			i++;
-		}		
+		}
 		return labels;
 	}
-	
+
 	private Dataset getGasDataset(final String name, List<GasRecord> quantizedData) {
 		final long[] data = new long[quantizedData.size()];
 
@@ -94,46 +92,53 @@ public class GasController {
 			final long amount = record.getAmount();
 			data[i] = amount;
 			i++;
-		}		
+		}
 
 		return new Dataset(name, data);
 	}
-	
-	private List<GasRecord> getGasRecords(final ZonedDateTime from, final ZonedDateTime to, final TemporalUnit quantizedby) {
+
+	private List<GasRecord> getGasRecords(final ZonedDateTime from, final ZonedDateTime to,
+			final TemporalUnit quantizedby) {
 		List<GasRecord> records = repository.findGasRecordsByPeriod(from, to);
 		return GasRecordQuantizer.quantize(records, quantizedby, displayZoneId, displayLocale);
 
 	}
-	
+
 	@RequestMapping("/gas/year")
 	public Data getGasCurrentYear(//
-			@RequestParam(value = "compareprevious", defaultValue = "false") final String comparepreviousParam
-		) {
-		ZoneId zoneId = ZoneId.of("Europe/Paris");
-		ZonedDateTime now = ZonedDateTime.ofInstant(Clock.system(zoneId).instant(), zoneId);
+			@RequestParam(value = "compareprevious", defaultValue = "false") final String comparepreviousParam) {
+
+		ZonedDateTime now = ZonedDateTime.ofInstant(Clock.system(displayZoneId).instant(), displayZoneId);
 		final TemporalUnit quantizedby = ChronoUnit.MONTHS;
-		
-		final ZonedDateTime from = ZonedDateTimeTruncator.truncate(now, ChronoUnit.YEARS, Locale.GERMANY);
+
+		final ZonedDateTime from = ZonedDateTimeTruncator.truncate(now, ChronoUnit.YEARS, displayLocale);
 		final ZonedDateTime to = from.plus(12, ChronoUnit.MONTHS);
-		
+
 		List<GasRecord> quantizedCurrentYear = getGasRecords(from, to, quantizedby);
-		
+
 		boolean comparePrevious = Boolean.valueOf(comparepreviousParam).booleanValue();
 
 		Dataset[] datasets = new Dataset[1 + (comparePrevious ? 1 : 0)];
-		
+
 		int currentYear = now.get(ChronoField.YEAR);
 		datasets[0] = getGasDataset(String.valueOf(currentYear), quantizedCurrentYear);
-		
+
 		if (comparePrevious) {
 			final ZonedDateTime fromPreviousYear = from.minusYears(1);
 			final ZonedDateTime toPreviousYear = from.plus(12, ChronoUnit.MONTHS);
 			List<GasRecord> quantizedPreviousYear = getGasRecords(fromPreviousYear, toPreviousYear, quantizedby);
-			
+
 			datasets[1] = getGasDataset(String.valueOf(currentYear - 1), quantizedPreviousYear);
 		}
 
-		String[] labels = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "November", "Dezember"};
+		String[] labels = { "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September",
+				"November", "Dezember" };
 		return new Data(labels, datasets);
+	}
+
+	@RequestMapping("/gas/event")
+	public String registerGasEvent() {
+		repository.createNormalGasRecord(Instant.now());
+		return "OK";
 	}
 }
