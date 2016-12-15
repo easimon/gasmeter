@@ -1,56 +1,57 @@
 package org.homenet.easimon.gasmeter.controller;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.ZonedDateTime;
-import java.util.Collections;
-
+import org.hamcrest.collection.IsArrayContaining;
+import org.homenet.easimon.gasmeter.domain.GasRecord;
 import org.homenet.easimon.gasmeter.domain.GasRecordRepository;
-import org.homenet.easimon.gasmeter.spring.SpringBasedIntegrationTest;
+import org.homenet.easimon.gasmeter.domain.GasRecordType;
+import org.homenet.easimon.gasmeter.json.Data;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 
-@EnableAutoConfiguration
-public class GasControllerTest extends SpringBasedIntegrationTest {
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.Locale;
 
-	private MockMvc mockMvc;
-
-	@Autowired
-	private WebApplicationContext context;
-
-	GasRecordRepository repositoryMock;
+public class GasControllerTest {
+	
+	GasController controller;
+	GasRecordRepository repository = mock(GasRecordRepository.class);
 
 	@Before
 	public void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-		repositoryMock = mock(GasRecordRepository.class);
+		this.controller = new GasController(repository, ZoneId.of("Europe/Paris"), Locale.GERMANY);
 	}
 
 	@Test
-	public void test() throws Exception {
-		final ZonedDateTime from = ZonedDateTime.parse("2015-10-10T00:00:00+02:00[Europe/Berlin]");
-		final ZonedDateTime to = ZonedDateTime.parse("2015-10-11T00:00:00+02:00[Europe/Berlin]");
-
-		when(repositoryMock.findAllGasRecords()).thenReturn(Collections.emptyList());
-		when(repositoryMock.findGasRecordsByPeriod(any(), any())).thenReturn(Collections.emptyList());
-
-		mockMvc.perform(get("/gas").accept(MediaType.ALL))
-				 .andExpect(status().isOk())
-		 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-//		 .andExpect(jsonPath("$.datasets", isEmptyOrNullString()))
-//		 .andExpect(jsonPath("$.labels", isEmptyOrNullString()));
-//		System.out.println(result.getResponse().getContentAsString());
+	public void testGetGas() {
+		GasRecord gasRecord = new GasRecord() {
+			
+			@Override
+			public GasRecordType getType() {
+				return GasRecordType.NORMAL;
+			}
+			
+			@Override
+			public Instant getTimestamp() {
+				return Instant.EPOCH;
+			}
+			
+			@Override
+			public long getAmount() {
+				return 1;
+			}
+		}; 
+		when(repository.findGasRecordsByPeriod(any(), any())).thenReturn(Collections.singletonList(gasRecord));
+		
+		Data data = controller.getGas("2016-01-01T00:00:00+02:00[Europe/Berlin]", 
+				ChronoUnit.DAYS.name(), ChronoUnit.DAYS.name(), "7", "false");
+		assertEquals(1, data.getDatasets().length);
+		assertEquals(1, data.getDatasets()[0].getData()[0]);
 	}
 }

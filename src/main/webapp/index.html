@@ -4,72 +4,92 @@
 <title>Gedoens</title>
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/Chart.bundle.min.js"></script>
+<script src="js/moment.min.js"></script>
 <script type="text/javascript">
+
+	var startDate = moment("2016-10-01");
+	function setDate (startDate) {
+		$('#startDate').html(moment(startDate).format('YYYY-MM-DD'));
+		$.ajax(getTwoWeeksQuery(startDate)).then(function (data) {
+			fillChart('#myChart', 'line', data);
+		});
+	}
+	function increaseStartDate () {
+		startDate = moment(startDate).add(14, 'days');
+		setDate(startDate);
+	}
+	function decreaseStartDate () {
+		startDate = moment(startDate).subtract(14, 'days');
+		setDate(startDate);
+	}
+	
+	var getYearCompare = {
+			url: 'http://localhost:8080/gas/year',
+			type: 'get',
+			data: {
+				compareprevious: true
+			}
+		};
+	
+	function getTwoWeeksQuery (startDate) {
+		var from = moment(startDate).format('YYYY-MM-DD')+'T00:00:00+02:00[Europe/Berlin]';
+		return getTwoWeeks = {
+			url: 'http://localhost:8080/gas',
+			type: 'get',
+			data: {
+				from: from,
+				quantizedby: 'DAYS',
+				quantityUnit: 'DAYS',
+				quantity: '14',
+				compareprevious: true
+			}
+		};
+	}
+
 	(function() {
+		
 		$(document).ready(function() {
-			fillChart();
+			$.ajax(getYearCompare).then(function (data) {
+				fillChart('#myChart2', 'bar', data);
+			});
+			
+			setDate (startDate);
+			
+			function createTable (labelColumn, dataColumn) {
+				var tabelle = '<table border="1">';
+				for (index in labelColumn) {
+					tabelle += '<tr>';
+					tabelle += '<td>' + labelColumn[index] + '</td>';
+					tabelle += '<td>' + dataColumn[index] + '</td>';
+					tabelle += '</tr>';
+				}
+				tabelle += '</table>';
+				return tabelle;
+			}
 		});
 	})();
-	function fillChart() {
-		var ctx = $("#myChart");
+	function fillChart (chart, chartType, data) {
+		var ctx = $(chart);
+		data.datasets[0].backgroundColor = 'rgba(255, 99, 132, 0.2)';
 		var myChart = new Chart(ctx, {
-			type : 'line',
-			data : {
-				labels : [ "January", "February", "March", "April", "May",
-						"June", "July", "Gedoens" ],
-				datasets : [ {
-					label : "My First dataset",
-					fill : true,
-					lineTension : 0.1,
-					backgroundColor : "rgba(75,192,192,0.4)",
-					borderColor : "rgba(75,192,192,1)",
-					borderCapStyle : 'butt',
-					borderDash : [],
-					borderDashOffset : 0.0,
-					borderJoinStyle : 'miter',
-					pointBorderColor : "rgba(75,192,192,1)",
-					pointBackgroundColor : "#fff",
-					pointBorderWidth : 1,
-					steppedLine : true,
-					pointHoverRadius : 5,
-					pointHoverBackgroundColor : "rgba(75,192,192,1)",
-					pointHoverBorderColor : "rgba(220,220,220,1)",
-					pointHoverBorderWidth : 2,
-					pointRadius : 1,
-					pointHitRadius : 10,
-					data : [ 65, 59, 80, 81, 56, 55, 40, 30 ],
-					spanGaps : true,
-				},
-
-				{
-					label : "My First dataset",
-					fill : true,
-					lineTension : 0.1,
-					backgroundColor : "rgba(175,192,192,0.4)",
-					borderColor : "rgba(175,192,192,1)",
-					borderCapStyle : 'butt',
-					borderDash : [],
-					borderDashOffset : 0.0,
-					borderJoinStyle : 'miter',
-					pointBorderColor : "rgba(175,192,192,1)",
-					pointBackgroundColor : "#fff",
-					pointBorderWidth : 1,
-					steppedLine : true,
-					pointHoverRadius : 5,
-					pointHoverBackgroundColor : "rgba(175,192,192,1)",
-					pointHoverBorderColor : "rgba(220,220,220,1)",
-					pointHoverBorderWidth : 2,
-					pointRadius : 1,
-					pointHitRadius : 10,
-					data : [ 165, 159, 180, 181, 156, 155, 140, 130 ],
-					spanGaps : true,
-				} ]
+			type: chartType,
+			data: data,
+			options: {
+				responsive: true
 			}
 		});
 	}
 </script>
 </head>
 <body>
-	<canvas id="myChart" width="400" height="200"></canvas>
+	<div id="output"></div>
+	<div>
+		<button type="button" onClick="decreaseStartDate()">zurück</button>
+		<span id="startDate"></span>
+		<button type="button" onClick="increaseStartDate()">vor</button>
+		<canvas id="myChart" width="400" height="200"></canvas>
+	</div>
+	
+	<canvas id="myChart2" width="400" height="200"></canvas>
 </body>
 </html>

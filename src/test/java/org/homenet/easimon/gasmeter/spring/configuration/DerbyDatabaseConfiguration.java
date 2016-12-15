@@ -24,7 +24,7 @@ public class DerbyDatabaseConfiguration {
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder() //
 				.addScript(initializerDdl) //
-				.addScript(initializerSql) //
+//				.addScript(initializerSql) //
 				.setType(EmbeddedDatabaseType.DERBY) //
 				.generateUniqueName(true) //
 				.build();
